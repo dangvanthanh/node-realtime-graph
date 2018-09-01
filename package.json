@@ -1,0 +1,27 @@
+{
+  "name": "realtime-graph",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "pusher": "^2.1.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dangvanthanh/node-realtime-graph.git"
+  },
+  "author": "Dang Van Thanh <chieuhue@gmail.com> (dangthanh.org)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dangvanthanh/node-realtime-graph/issues"
+  },
+  "homepage": "https://github.com/dangvanthanh/node-realtime-graph#readme"
+}
