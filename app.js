@@ -5,9 +5,9 @@ var pusher = new Pusher('61b8c4816cbe5b5435b9', {
   forceTLS: true
 });
 
-var channel = pusher.subscribe('my-channel');
-channel.bind('my-event', function(data) {
-  // alert(JSON.stringify(data));
+var channel = pusher.subscribe('poll-channel');
+channel.bind('update-poll', function(data) {
+  update(data.poll);
 });
 
 const margin = { top: 20, right: 20, bottom: 30, left: 40 };
@@ -40,7 +40,7 @@ const tip = d3
   .append('div')
   .attr('class', 'tooltip');
 
-fetch('http://127.0.0.1:3000/poll')
+fetch('http://localhost:3000/poll')
   .then(res => res.json())
   .then(poll => {
     svg

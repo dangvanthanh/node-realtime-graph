@@ -1,19 +1,8 @@
-require('dotenv').config({ path: 'config.env' });
 const express = require('express');
-const cors = require('cors');
-var Pusher = require('pusher');
+const Pusher = require('pusher');
+const dotenv = require('dotenv');
 
-var pusher = new Pusher({
-  appId: process.env.PUSHER_APP_ID,
-  key: process.env.PUSHER_APP_KEY,
-  secret: process.env.PUSHER_APP_SECRET,
-  cluster: process.env.PUSHER_APP_CLUSTER,
-  encrypted: true
-});
-
-// pusher.trigger('my-channel', 'my-event', {
-//   message: 'hello world'
-// });
+dotenv.config({ path: 'config.env' });
 
 const poll = [
   {
@@ -38,20 +27,39 @@ const poll = [
   }
 ];
 
-const app = express();
+const pusher = new Pusher({
+  appId: process.env.PUSHER_APP_ID,
+  key: process.env.PUSHER_APP_KEY,
+  secret: process.env.PUSHER_APP_SECRET,
+  cluster: process.env.PUSHER_APP_CLUSTER,
+  encrypted: true
+});
 
-app.use(cors);
+function getRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+function increment() {
+  const number = getRandomNumber(0, poll.length);
+  poll[number].votes += 20;
+}
+
+function updatePoll() {
+  setInterval(() => {
+    increment();
+    pusher.trigger('poll-channel', 'update-poll', {
+      poll
+    });
+  }, 1000);
+}
+
+const app = express();
 
 app.get('/poll', (req, res) => {
   res.json(poll);
+  updatePoll();
 });
 
-app.set('port', process.env.PORT || 3000);
-
-const server = app.listen(app.get('port'), '127.0.0.1', () => {
-  console.log(
-    `Express running -> PORT ${server.address().address}:${
-      server.address().port
-    }`
-  );
+app.listen(3000, () => {
+  console.log(`App running on port 3000`);
 });
